@@ -44,3 +44,6 @@ print(f"Response from microservice: {response}")
 2. Parses request type, extracting age and heart rate if applicable
 3. Processes the request to determine intensity, target heart rate, or instructions
 4. Sends a response back to the client
+
+## UML Diagram
+![UML Diagram](Image/UML_Diagram.png)
