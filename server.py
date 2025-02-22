@@ -5,17 +5,16 @@ def calculate_target_heart_rate(age):
     max_heart_rate = 208 - (0.7 * age)
     moderate_intensity = (max_heart_rate * 0.5, max_heart_rate * 0.7)
     vigorous_intensity = (max_heart_rate * 0.7, max_heart_rate * 0.85)
-    return round(moderate_intensity[0]), round(moderate_intensity[1]), round(vigorous_intensity[0]), round(
-        vigorous_intensity[1])
+    return round(moderate_intensity[0]), round(moderate_intensity[1]), round(vigorous_intensity[0]), round(vigorous_intensity[1])
 
 
 def determine_intensity(age, heart_rate):
-    _, moderate_max, vigorous_min, vigorous_max = calculate_target_heart_rate(age)
-    if heart_rate < moderate_max * 0.5:
+    moderate_min, moderate_max, vigorous_min, vigorous_max = calculate_target_heart_rate(age)
+    if heart_rate < moderate_min:
         return "light"
-    elif moderate_max * 0.5 <= heart_rate <= moderate_max * 0.7:
+    elif moderate_min <= heart_rate < vigorous_min:
         return "moderate"
-    elif vigorous_min <= heart_rate <= vigorous_max:
+    elif vigorous_min <= heart_rate:
         return "vigorous"
     else:
         return "out of range"
@@ -40,9 +39,10 @@ while True:
     print(f"Received request: {message}")
 
     # Parse the request
-    request_type = message[0]
-    age = int(message[2:5].strip('x')) if 'x' not in message[2:5] else None
-    heart_rate = int(message[6:9].strip('x')) if 'x' not in message[6:9] else None
+    parts = message.split()
+    request_type = parts[0]
+    age = int(parts[1]) if len(parts) > 1 and parts[1] != "xxx" else None
+    heart_rate = int(parts[2]) if len(parts) > 2 and parts[2] != "xxx" else None
 
     # Process the request
     if request_type == "H" and age is not None and heart_rate is not None:

@@ -5,13 +5,14 @@ context = zmq.Context()
 socket = context.socket(zmq.REQ)
 socket.connect("tcp://localhost:5555")
 
+
 def main():
     while True:
         print("\nChoose an option:")
         print("H: Calculate heart rate intensity")
         print("T: Get information on how to check your heart rate")
         print("C: Calculate target heart rate")
-        print("Q: Quit")  # Option to quit the program
+        print("Q: Quit")
 
         option = input("Enter your choice (H/T/C/Q): ").strip().upper()
 
@@ -26,17 +27,18 @@ def main():
             request = "T xxx xxx"
         elif option == "Q":
             print("Exiting the program.")
-            break  # Exit the loop and quit the program
+            break  # Exit the loop and program
         else:
             print("Invalid option.")
-            continue  # Go back to the options menu
+            continue  # Go back to the menu
 
         # Send request to the server
         socket.send_string(request)
 
         # Get the response from the server
         message = socket.recv_string()
-        print(f"{message}")
+        print(f" {message}")
+
 
 if __name__ == "__main__":
     main()
